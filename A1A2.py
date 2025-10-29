@@ -52,3 +52,38 @@ def get_shot(tebakan):
 
         except:
             print("Input salah, coba lagi.")
+
+def check_shot(shot, boat1, boat2, boat3, hit, miss, comp): 
+
+    if shot in boat1:
+        boat1.remove(shot)
+        if len(boat1) > 0:
+            hit.append(shot)
+            score += 2
+        else:
+            comp.append(shot)
+            score += 3
+            print("KAPAL 1 TENGGELAM!")
+    elif shot in boat2:
+        boat2.remove(shot)
+        if len(boat2) > 0:
+            hit.append(shot)
+            score += 2
+        else:
+            comp.append(shot)
+            score += 3
+            print("KAPAL 2 TENGGELAM!")
+    elif shot in boat3:
+        boat3.remove(shot)
+        if len(boat3) > 0:
+            hit.append(shot)
+            score += 2
+        else:
+            comp.append(shot)
+            score += 3
+            print("KAPAL 3 TENGGELAM!")
+    else:
+        miss.append(shot)
+        score -= 1
+
+    return boat1, boat2, boat3, hit, miss, comp
