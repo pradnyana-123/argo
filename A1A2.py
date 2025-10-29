@@ -87,3 +87,23 @@ def check_shot(shot, boat1, boat2, boat3, hit, miss, comp):
         score -= 1
 
     return boat1, boat2, boat3, hit, miss, comp
+
+def tata_letak_boat():
+    boats = []
+    semua_posisi = set()
+    for boat_length in [3, 3, 3]:
+        while True:
+            orientation = random.randint(0, 1)
+            if orientation == 0:  # horizontal
+                x = random.randint(0, 4)
+                y = random.randint(0, 4 - boat_length + 1)
+                positions = [x*5 + (y + i) for i in range(boat_length)]
+            else:  # vertical
+                x = random.randint(0, 4 - boat_length + 1)
+                y = random.randint(0, 4)
+                positions = [(x + i)*5 + y for i in range(boat_length)]
+            if all(p not in semua_posisi for p in positions):
+                boats.append(positions)
+                semua_posisi.update(positions)
+                break
+    return boats[0], boats[1], boats[2]
