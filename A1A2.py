@@ -2,10 +2,10 @@ import random
 
 def show_board(hit, miss, comp):
     global score
-
-    print("       Battleship Game", "\n")
-    print("       0  1  2  3  4")
-    print(f"score: {score}")
+    print("\n     Battleship Game")
+    print(f"Sisa tebakan: {3 - len(miss)}")
+    print(f"                        Score: {score}")    
+    print("     0  1  2  3  4")
 
     place = 0
     huruf = ['A', 'B', 'C', 'D', 'E']
@@ -16,16 +16,15 @@ def show_board(hit, miss, comp):
             if place in miss:
                 ch = " X "
             elif place in hit:
-                ch = " o "
-            elif place in comp:
                 ch = " O "
+            elif place in comp:
+                ch = " 0 "
             row += ch
             place += 1
         print(huruf[x], " ", row)
 
 def get_shot(tebakan):
-    ok = "n"
-    while ok == "n":
+    while True:
         try:
             shot = input("Masukkan tebakan anda (contoh: A1): ").upper().strip()
             if len(shot) < 2:
@@ -39,7 +38,7 @@ def get_shot(tebakan):
                 print("Koordinat tidak valid! Gunakan A-E dan 0-4.")
                 continue
 
-            # konversi ke posisi angka
+            # Konversi ke posisi angka
             baris = ord(huruf) - 65
             kolom = int(angka)
             posisi = baris * 5 + kolom
@@ -47,13 +46,13 @@ def get_shot(tebakan):
             if posisi in tebakan:
                 print("Sudah ditebak, coba posisi lain.")
             else:
-                ok = "y"
                 return posisi
 
         except:
             print("Input salah, coba lagi.")
 
-def check_shot(shot, boat1, boat2, boat3, hit, miss, comp): 
+def check_shot(shot, boat1, boat2, boat3, hit, miss, comp):
+    global score  # <--- ini penting ditambahkan!
 
     if shot in boat1:
         boat1.remove(shot)
@@ -97,18 +96,18 @@ def tata_letak_boat():
             if orientation == 0:  # horizontal
                 x = random.randint(0, 4)
                 y = random.randint(0, 4 - boat_length + 1)
-                positions = [x*5 + (y + i) for i in range(boat_length)]
+                positions = [x * 5 + (y + i) for i in range(boat_length)]
             else:  # vertical
                 x = random.randint(0, 4 - boat_length + 1)
                 y = random.randint(0, 4)
-                positions = [(x + i)*5 + y for i in range(boat_length)]
+                positions = [(x + i) * 5 + y for i in range(boat_length)]
             if all(p not in semua_posisi for p in positions):
                 boats.append(positions)
                 semua_posisi.update(positions)
                 break
     return boats[0], boats[1], boats[2]
 
-
+# --- Game Loop Utama ---
 while True:
     hit = []
     miss = []
@@ -116,16 +115,21 @@ while True:
     score = 0
     boat1, boat2, boat3 = tata_letak_boat()
 
-    for i in range(25):
+    while True:
         show_board(hit, miss, comp)
         tebakan = hit + miss + comp
         shot = get_shot(tebakan)
-        boat1, boat2, boat3, hit, miss, comp = check_shot(shot, boat1, boat2, boat3, hit, miss, comp)
+        boat1, boat2, boat3, hit, miss, comp = check_shot(
+            shot, boat1, boat2, boat3, hit, miss, comp
+        )
 
-        if len(boat1) < 1 and len(boat2) < 1 and len(boat3) < 1:
+        # Kondisi menang
+        if len(boat1) == 0 and len(boat2) == 0 and len(boat3) == 0:
             print(f"Selamat, Anda menang!\nScore akhir: {score}")
             break
-        if len(miss) >= 10:
+
+        # Kondisi kalah
+        if len(miss) >= 3:
             print(f"Anda kalah.\nScore akhir: {score}")
             break
 
@@ -133,3 +137,4 @@ while True:
     if ulang != "ya":
         print("Terima kasih sudah bermain!")
         break
+
