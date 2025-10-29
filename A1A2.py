@@ -107,3 +107,29 @@ def tata_letak_boat():
                 semua_posisi.update(positions)
                 break
     return boats[0], boats[1], boats[2]
+
+
+while True:
+    hit = []
+    miss = []
+    comp = []
+    score = 0
+    boat1, boat2, boat3 = tata_letak_boat()
+
+    for i in range(25):
+        show_board(hit, miss, comp)
+        tebakan = hit + miss + comp
+        shot = get_shot(tebakan)
+        boat1, boat2, boat3, hit, miss, comp = check_shot(shot, boat1, boat2, boat3, hit, miss, comp)
+
+        if len(boat1) < 1 and len(boat2) < 1 and len(boat3) < 1:
+            print(f"Selamat, Anda menang!\nScore akhir: {score}")
+            break
+        if len(miss) >= 10:
+            print(f"Anda kalah.\nScore akhir: {score}")
+            break
+
+    ulang = input("Apakah Anda ingin mengulang game? (ya/no): ").lower()
+    if ulang != "ya":
+        print("Terima kasih sudah bermain!")
+        break
