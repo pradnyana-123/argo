@@ -1,7 +1,7 @@
 import random
 
-def show_board(hit, miss, comp):
-    global score
+def show_board(hit, miss, comp, score):
+    
     print("\n     Battleship Game")
     print(f"Sisa tebakan: {3 - len(miss)}")
     print(f"                        Score: {score}")    
@@ -51,8 +51,7 @@ def get_shot(tebakan):
         except:
             print("Input salah, coba lagi.")
 
-def check_shot(shot, boat1, boat2, boat3, hit, miss, comp):
-    global score  # <--- ini penting ditambahkan!
+def check_shot(shot, boat1, boat2, boat3, hit, miss, comp, score):
 
     if shot in boat1:
         boat1.remove(shot)
@@ -116,28 +115,29 @@ def main():
         score = 0
         boat1, boat2, boat3 = tata_letak_boat()
 
-        while True:
-            show_board(hit, miss, comp)
+        for i in range(25):
+            show_board(hit, miss, comp, score)
             tebakan = hit + miss + comp
             shot = get_shot(tebakan)
             boat1, boat2, boat3, hit, miss, comp = check_shot(
-            shot, boat1, boat2, boat3, hit, miss, comp
+                 shot, boat1, boat2, boat3, hit, miss, comp, score
             )
 
         # Kondisi menang
             if len(boat1) == 0 and len(boat2) == 0 and len(boat3) == 0:
-                 print(f"Selamat, Anda menang!\nScore akhir: {score}")
-                 break
+                print(f"Selamat, Anda menang!\nScore akhir: {score}")
+                break
 
         # Kondisi kalah
             if len(miss) >= 3:
-                 print(f"Anda kalah.\nScore akhir: {score}")
-                 break
+                print(f"Anda kalah.\nScore akhir: {score}")
+                break
 
         ulang = input("Apakah Anda ingin mengulang game? (ya/no): ").lower()
         if ulang != "ya":
             print("Terima kasih sudah bermain!")
-            break  
+            break
+
 
 if __name__ == "__main__":
     main()
