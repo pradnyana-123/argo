@@ -108,33 +108,36 @@ def tata_letak_boat():
     return boats[0], boats[1], boats[2]
 
 # --- Game Loop Utama ---
-while True:
-    hit = []
-    miss = []
-    comp = []
-    score = 0
-    boat1, boat2, boat3 = tata_letak_boat()
-
+def main():
     while True:
-        show_board(hit, miss, comp)
-        tebakan = hit + miss + comp
-        shot = get_shot(tebakan)
-        boat1, boat2, boat3, hit, miss, comp = check_shot(
+        hit = []
+        miss = []
+        comp = []
+        score = 0
+        boat1, boat2, boat3 = tata_letak_boat()
+
+        while True:
+            show_board(hit, miss, comp)
+            tebakan = hit + miss + comp
+            shot = get_shot(tebakan)
+            boat1, boat2, boat3, hit, miss, comp = check_shot(
             shot, boat1, boat2, boat3, hit, miss, comp
-        )
+            )
 
         # Kondisi menang
-        if len(boat1) == 0 and len(boat2) == 0 and len(boat3) == 0:
-            print(f"Selamat, Anda menang!\nScore akhir: {score}")
-            break
+            if len(boat1) == 0 and len(boat2) == 0 and len(boat3) == 0:
+                 print(f"Selamat, Anda menang!\nScore akhir: {score}")
+                 break
 
         # Kondisi kalah
-        if len(miss) >= 3:
-            print(f"Anda kalah.\nScore akhir: {score}")
-            break
+            if len(miss) >= 3:
+                 print(f"Anda kalah.\nScore akhir: {score}")
+                 break
 
-    ulang = input("Apakah Anda ingin mengulang game? (ya/no): ").lower()
-    if ulang != "ya":
-        print("Terima kasih sudah bermain!")
-        break
+        ulang = input("Apakah Anda ingin mengulang game? (ya/no): ").lower()
+        if ulang != "ya":
+            print("Terima kasih sudah bermain!")
+            break  
 
+if __name__ == "__main__":
+    main()
